@@ -1,6 +1,6 @@
 import uuid
 from typing import Optional
-from domain.models import Account  # Assuming domain/models.py contains your Account class
+from domain.entities import Account  # Assuming domain/models.py contains your Account class
 
 
 class AccountRepository:
