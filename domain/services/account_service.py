@@ -3,16 +3,21 @@ from domain.entities.account import Account
 
 
 class AccountService:
-    def __init__(self, account_repository: AccountRepository):
-        self.account_repository = account_repository
+    @staticmethod
+    def validate_account_balance(account: Account) -> bool:
+        if account.account_type == "savings" and account.balance < 5000:
+            raise ValueError("Savings accounts must maintain a minimum balance of shs.5000")
+        return True
 
-    def create_account(self, owner_name: str, initial_balance: float = 0.0) -> Account:
-        account = Account(owner_name, initial_balance)
-        self.account_repository.save(account)
-        return account
+    @staticmethod
+    def validate_deposit(amount: float) -> bool:
+        if amount <= 0:
+            raise ValueError("Deposit amount must be positive")
+        return True
 
-    def get_account(self, account_id: str) -> Account:
-        account = self.account_repository.find_by_id(account_id)
-        if not account:
-            raise ValueError("Account not found")
-        return account
+    @staticmethod
+    def validate_withdrawal(account: Account, amount: float) -> bool:
+        if amount > account.balance:
+            raise ValueError("Insufficient balance")
+        return True
+
