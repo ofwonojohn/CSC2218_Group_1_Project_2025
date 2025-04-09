@@ -1,6 +1,6 @@
 import uuid
 from typing import List
-from domain.models import Transaction  # Assuming domain/models.py contains your Transaction class
+from domain.entities import Transaction  # Assuming domain/entity.py contains your Transaction class
 
 
 class TransactionRepository:
