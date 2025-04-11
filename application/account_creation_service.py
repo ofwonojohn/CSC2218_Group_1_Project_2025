@@ -9,7 +9,7 @@ class AccountCreationService:
     def __init__(self, account_repository):
         self.account_repository = account_repository
 
-    def create_account(self, account_type: str, owner_id: str, initial_deposit: float = 0.0) -> str:
+    def create_account(self, account_type: str, owner_name: str, initial_deposit: float = 0.0) -> str:
         """
         Create a new account of the specified type
         
@@ -50,7 +50,7 @@ class AccountCreationService:
             account_type=account_type_enum,
             balance=initial_deposit,
             status=AccountStatus.ACTIVE,
-            owner_id=owner_id,
+            owner_name=owner_name,
             creation_date=datetime.now(),
             interest_rate=interest_rate
         )
