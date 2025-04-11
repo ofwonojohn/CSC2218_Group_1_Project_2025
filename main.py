@@ -23,6 +23,7 @@ transactions = {}
 class AccountCreateRequest(BaseModel):
     account_type: str
     initial_deposit: float
+    owner_name: str
 
 class TransactionRequest(BaseModel):
     amount: float
@@ -38,7 +39,8 @@ def create_account(request: AccountCreateRequest):
     account_id = str(uuid4())
     accounts[account_id] = {
         "type": request.account_type,
-        "balance": request.initial_deposit
+        "balance": request.initial_deposit,
+        "owner_name":request.owner_name
     }
     transactions[account_id] = [
         Transaction(type="deposit", amount=request.initial_deposit, balance_after=request.initial_deposit)
@@ -46,7 +48,8 @@ def create_account(request: AccountCreateRequest):
     return {
         "account_id": account_id,
         "type": request.account_type,
-        "balance": request.initial_deposit
+        "balance": request.initial_deposit,
+        "account owner":request.owner_name
     }
 
 # Deposit
