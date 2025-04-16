@@ -7,5 +7,6 @@ class Transaction:
         self.account_id = account_id 
         self.transaction_type = transaction_type  
         self.amount = amount
-        self.timestamp = datetime.datetime.now()  
+        self.timestamp = datetime.now()
+
 
