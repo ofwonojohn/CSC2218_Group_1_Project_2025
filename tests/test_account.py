@@ -3,10 +3,10 @@ from domain.entities.account import Account
 from domain.entities.account_type import AccountType
 from domain.entities.account_status import AccountStatus
 
+
 class TestAccount(unittest.TestCase):
 
     def setUp(self):
-        # Create a fresh account for each test
         self.account = Account(
             owner_name="John Paul",
             account_type=AccountType.SAVINGS,
@@ -53,6 +53,26 @@ class TestAccount(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             self.account.withdraw(-50)
         self.assertEqual(str(context.exception), "Withdrawal amount must be positive")
+
+    def test_transfer_funds(self):
+        recipient = Account(
+            owner_name="Bob Kamuli",
+            balance=2000
+        )
+        self.account.transfer_to(recipient, 4000)
+
+        self.assertEqual(self.account.balance, 6000)
+        self.assertEqual(recipient.balance, 6000)
+
+        # Check transaction entries
+        self.assertEqual(self.account.transactions[-1].transaction_type, "transfer_out")
+        self.assertEqual(self.account.transactions[-1].amount, 4000)
+        self.assertEqual(self.account.transactions[-1].destination_account_id, recipient.account_id)
+
+        self.assertEqual(recipient.transactions[-1].transaction_type, "transfer_in")
+        self.assertEqual(recipient.transactions[-1].amount, 4000)
+        self.assertEqual(recipient.transactions[-1].source_account_id, self.account.account_id)
+
 
 if __name__ == "__main__":
     unittest.main()
