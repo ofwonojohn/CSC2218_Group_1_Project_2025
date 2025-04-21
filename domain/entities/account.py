@@ -38,3 +38,37 @@ class Account:
             raise ValueError("Insufficient balance")
         self.balance -= amount
         self.transactions.append(Transaction(self.account_id, "withdrawal", amount))
+
+    def transfer_to(self, target_account: "Account", amount: float):
+        if amount <= 0:
+            raise ValueError("Transfer amount must be positive")
+        if amount > self.balance:
+            raise ValueError("Insufficient balance for transfer")
+        if self.account_id == target_account.account_id:
+            raise ValueError("Cannot transfer to the same account")
+        
+        # Withdraw from current account
+        self.balance -= amount
+        self.transactions.append(Transaction(
+        account_id=self.account_id,
+        transaction_type="transfer_out",
+        amount=amount,
+        destination_account_id=target_account.account_id
+    ))
+
+    # Deposit into target account
+        target_account.balance += amount
+        target_account.transactions.append(Transaction(
+        account_id=target_account.account_id,
+        transaction_type="transfer_in",
+        amount=amount,
+        source_account_id=self.account_id
+    ))
+
+        # Perform the transfer
+        self.balance -= amount
+        target_account.balance += amount
+
+        # Record the transactions for both accounts
+        self.transactions.append(Transaction(self.account_id, "transfer_out", amount))
+        target_account.transactions.append(Transaction(target_account.account_id, "transfer_in", amount))
