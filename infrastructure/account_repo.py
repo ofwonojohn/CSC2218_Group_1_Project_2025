@@ -19,3 +19,17 @@ class AccountRepository:
     def update_account(self, account: Account) -> None:
         if account.id in self._accounts:
             self._accounts[account.id] = account
+
+    #method to transfer money between accounts
+    def transfer_funds(self, source_account_id, destination_account_id, amount):
+        source = self.get_account_by_id(source_account_id)
+        destination = self.get_account_by_id(destination_account_id)
+
+        if source.balance < amount:
+            raise ValueError("Insufficient funds for transfer.")
+        
+        source.withdraw(amount)
+        destination.deposit(amount)
+        
+        self.update_account(source)
+        self.update_account(destination)

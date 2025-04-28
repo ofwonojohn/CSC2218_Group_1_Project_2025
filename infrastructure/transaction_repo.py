@@ -18,3 +18,8 @@ class TransactionRepository:
             t for t in self._transactions.values()
             if t.account_id == account_id  # Assuming Transaction has an `account_id` field
         ]
+    #transfer transactions
+    def find_transaction_by_id(self, transaction_id: int):
+        if 0 <= transaction_id < len(self._transactions):
+            return self._transactions[transaction_id]
+        return None
