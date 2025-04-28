@@ -1,4 +1,3 @@
-# infrastructure/logging/logger.py
 import logging
 
 # Basic logging config
