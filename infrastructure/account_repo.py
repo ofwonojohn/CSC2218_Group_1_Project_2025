@@ -33,3 +33,26 @@ class AccountRepository:
         
         self.update_account(source)
         self.update_account(destination)
+
+# Transaction limit storage
+
+class InMemoryAccountRepository:
+    def __init__(self):
+        self._accounts = {}
+        self._limits = {}  # account_id -> {daily: 500, monthly: 2000}
+        self._usage = {}   # account_id -> {daily_used: 150, monthly_used: 1200}
+
+    def set_limits(self, account_id, daily_limit, monthly_limit):
+        self._limits[account_id] = {"daily": daily_limit, "monthly": monthly_limit}
+
+    def get_limits(self, account_id):
+        return self._limits.get(account_id, {"daily": 0, "monthly": 0})
+
+    def update_usage(self, account_id, amount):
+        if account_id not in self._usage:
+            self._usage[account_id] = {"daily_used": 0, "monthly_used": 0}
+        self._usage[account_id]["daily_used"] += amount
+        self._usage[account_id]["monthly_used"] += amount
+
+    def get_usage(self, account_id):
+        return self._usage.get(account_id, {"daily_used": 0, "monthly_used": 0})
