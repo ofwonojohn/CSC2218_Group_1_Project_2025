@@ -5,12 +5,11 @@ from typing import Optional, List
 from domain.entities.transaction import Transaction, TransactionType
 from domain.entities.account import Account
 
-
 class TransactionService:
     def __init__(self, account_repository, transaction_repository):
         self.account_repository = account_repository
         self.transaction_repository = transaction_repository
-
+    
     def deposit(self, account_id: str, amount: float, description: Optional[str] = None) -> Transaction:
         """
         Deposit funds into an account
@@ -43,21 +42,21 @@ class TransactionService:
         self.account_repository.update_account(account)
         
         # Create a transaction record
-        transaction_id = str(uuid.uuid4())
         transaction = Transaction(
-            transaction_id=transaction_id,
-            transaction_type=TransactionType.DEPOSIT,
-            amount=amount,
             account_id=account_id,
-            timestamp=datetime.now(),
-            description=description
+            transaction_type=TransactionType.DEPOSIT,
+            amount=amount
         )
+        
+        # If description is a field in Transaction, set it after creation
+        if description:
+            transaction.description = description
         
         # Save the transaction
         self.transaction_repository.save_transaction(transaction)
         
         return transaction
-        
+    
     def withdraw(self, account_id: str, amount: float, description: Optional[str] = None) -> Transaction:
         """
         Withdraw funds from an account
@@ -90,18 +89,17 @@ class TransactionService:
         self.account_repository.update_account(account)
         
         # Create a transaction record
-        transaction_id = str(uuid.uuid4())
         transaction = Transaction(
-            transaction_id=transaction_id,
-            transaction_type=TransactionType.WITHDRAW,
-            amount=amount,
             account_id=account_id,
-            timestamp=datetime.now(),
-            description=description
+            transaction_type=TransactionType.WITHDRAW,
+            amount=amount
         )
+        
+        # If description is a field in Transaction, set it after creation
+        if description:
+            transaction.description = description
         
         # Save the transaction
         self.transaction_repository.save_transaction(transaction)
         
         return transaction
-  
