@@ -1,7 +1,7 @@
 from typing import List
 from uuid import uuid4
 from datetime import datetime
-from CSC2218_Group_1_Project_2025.domain.strategies import interest_strategy
+from domain.strategies import interest_strategy
 from domain.entities.transaction import Transaction, TransactionType
 from domain.entities.account_type import AccountType
 from domain.entities.account_status import AccountStatus
