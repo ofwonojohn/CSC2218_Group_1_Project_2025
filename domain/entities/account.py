@@ -2,7 +2,7 @@ from typing import List
 from uuid import uuid4
 from datetime import datetime
 from CSC2218_Group_1_Project_2025.domain.strategies import interest_strategy
-from domain.entities.transaction import Transaction
+from domain.entities.transaction import Transaction, TransactionType
 from domain.entities.account_type import AccountType
 from domain.entities.account_status import AccountStatus
 
@@ -28,6 +28,7 @@ class Account:
         self.transactions: List[Transaction] = []
         self.interest_strategy = interest_strategy
 
+    #Deposite must be a positive amount
     def deposit(self, amount: float):
         if amount <= 0:
             raise ValueError("Deposit amount must be positive")
@@ -54,7 +55,7 @@ class Account:
         self.balance -= amount
         self.transactions.append(Transaction(
         account_id=self.account_id,
-        transaction_type="transfer_out",
+        transaction_type=TransactionType.TRANSFER_OUT,
         amount=amount,
         destination_account_id=target_account.account_id
     ))
@@ -63,7 +64,7 @@ class Account:
         target_account.balance += amount
         target_account.transactions.append(Transaction(
         account_id=target_account.account_id,
-        transaction_type="transfer_in",
+        transaction_type=TransactionType.TRANSFER_IN,
         amount=amount,
         source_account_id=self.account_id
     ))

@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from domain.entities.account_type import AccountType
+from domain.entities.transaction_type import TransactionType
 from uuid import uuid4
 from typing import List
 from datetime import datetime
@@ -25,7 +27,7 @@ interest_rate = 0.02  # 2% annual interest
 
 # Models
 class AccountCreateRequest(BaseModel):
-    account_type: str
+    account_type: AccountType
     initial_deposit: float
     owner_name: str
 
@@ -33,7 +35,7 @@ class TransactionRequest(BaseModel):
     amount: float
 
 class Transaction(BaseModel):
-    type: str
+    type: TransactionType
     amount: float
     balance_after: float
 
