@@ -27,7 +27,7 @@ interest_rate = 0.02  # 2% annual interest
 
 # Models
 class AccountCreateRequest(BaseModel):
-    account_type: AccountType
+    account_type: str
     initial_deposit: float
     owner_name: str
 
@@ -35,7 +35,7 @@ class TransactionRequest(BaseModel):
     amount: float
 
 class Transaction(BaseModel):
-    type: TransactionType
+    type: str
     amount: float
     balance_after: float
 
